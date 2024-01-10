@@ -9,6 +9,7 @@ pip instal requests
 
 from flask import Flask, render_template
 from flask_restful import Resource, Api, reqparse, abort
+from conn import cursor
 import json
 import random
 
@@ -80,6 +81,9 @@ api = Api(app)
 @app.route('/')
 def index():
     return ecolabs
+
+
+
 
 if __name__ == "__main__":
     app.run(host=ip, port=port, debug=debug)
