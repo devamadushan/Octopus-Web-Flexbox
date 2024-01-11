@@ -3,9 +3,10 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, redirect, url_for
 from conn import utilisateur,session, password, base_de_donne, port, Base
-
+from Historique import Historique
 from Experiences import Experience
 from Cellules import Cellule
+from read_db import get_cell_by_name, get_historique_by_id_name , get_experience_of_cellule
 
 
 
@@ -30,14 +31,21 @@ def detail():
     data = requests.get('http://10.119.20.100:8080/')
     info = data.json()
     value = request.form.get('name')
-
     exp = list(value)
-
     ecolab = exp[0]
-
     cell = exp[1]
+
     lieu = "E"+ecolab+"C "+ cell
-    return render_template('detail.html',nom=lieu, json= info)
+    cellule = get_cell_by_name(lieu)
+
+    experience = get_experience_of_cellule(cellule.id)
+    historique = get_historique_by_id_name(cellule.id, "Cellule")
+    
+
+    
+   
+    return render_template('detail.html',nom_cellule=lieu, json= info,
+                           cellule = cellule, experience=experience,historique= historique )
 
 
 
@@ -48,4 +56,4 @@ def detail():
 
 
 if __name__ == "__main__":
-    app.run(host="10.118.10.91",port=5000, debug=True)
+    app.run(host="",port=5000, debug=True)
