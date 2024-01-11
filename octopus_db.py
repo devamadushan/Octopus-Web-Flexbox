@@ -1,20 +1,27 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from conn import utilisateur, password, base_de_donne, port, Base
+from flask import Flask, render_template, request, redirect, url_for
+from conn import utilisateur,session, password, base_de_donne, port, Base
 
-from Experiences import Experiences
+from Experiences import Experience
 from Cellules import Cellule
+
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{password}@localhost:{port}/{base_de_donne}'
-db = SQLAlchemy()
-
-def init_app(app):
-    db.init_app(app)
 
 
+@app.route('/toto', methods=['POST'])
+def traitementform():
 
+    nom = request.form['name']
+    date_debut = request.form['date_debut']
+    date_fin  = request.form['date_fin']
+    lieu = request.form['lieu']
+    print(nom)
+
+    return "c'est bon"
 
 if __name__ == "__main__":
-    app.run(host="",port=8000, debug=True)
+    app.run(host="10.118.10.91",port=5000, debug=True)
