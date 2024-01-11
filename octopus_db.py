@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask 
+import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, redirect, url_for
 from conn import utilisateur,session, password, base_de_donne, port, Base
@@ -21,7 +22,30 @@ def traitementform():
     lieu = request.form['lieu']
     print(nom)
 
-    return "c'est bon"
+    return redirect('http://10.118.10.23:5000')
+
+@app.route('/detail', methods=['Post'])
+def detail():
+
+    data = requests.get('http://10.119.20.100:8080/')
+    info = data.json()
+    value = request.form.get('name')
+
+    exp = list(value)
+
+    ecolab = exp[0]
+
+    cell = exp[1]
+    lieu = "E"+ecolab+"C "+ cell
+    return render_template('detail.html',nom=lieu, json= info)
+
+
+
+
+
+    
+
+
 
 if __name__ == "__main__":
     app.run(host="10.118.10.91",port=5000, debug=True)

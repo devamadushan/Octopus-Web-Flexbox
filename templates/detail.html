@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <form>
+        <!-- <p>Nom del"expérience : </p><input value=""><br> -->
+        <p>Date de début : </p><p></p><br>
+        <p>Date de fin : </p><p> </p><br>
+        <p>Lieu : </p><p>Ecolab 2 cellule 1</p><br>
+        <!-- <p>Climat : </p><input value=""><br> -->
+        <!-- <p>Temperature : </p><input value="8.100000381469727"><br> -->
+        <!-- <p>Température de pluie : </p><input value="2.4000000953674316"><br> -->
+        <!-- <p>Température consigne : </p><input value="20"><br> -->
+    </form>
+
+
+    <div class="pt-30">
+        <p>Nouvelle experience</p>
+    </div>
+    <form action="http://10.118.10.91:5000/toto" method="POST">
+        <label for="name">Nom de l'experience : </label>
+            <input name="name" type="text"> <br>
+        <label for="date_debut">Date de début : </label>
+            <input name="date_debut" type="date"><br>
+        <label for="date_fin">Date de fin : </label>
+            <input name="date_fin" type="date"><br>
+        <label for="lieu">Lieu : </label>
+            <select name="lieu">
+                <option>Choisir le lieu d'expérience</option>
+
+                <option value="E1c1">Ecolab 1 cellule 1</option>
+                <option value="E1c2">Ecolab 1 cellule 2</option>
+                <option value="E1c3">Ecolab 1 cellule 3</option>
+
+                <option value="E2c1">Ecolab 2 cellule 1</option>
+                <option value="E2c2">Ecolab 2 cellule 2</option>
+                <option value="E2c3">Ecolab 2 cellule 3</option>
+
+                <option value="E3c1">Ecolab 3 cellule 1</option>
+                <option value="E3c2">Ecolab 3 cellule 2</option>
+                <option value="E3c3">Ecolab 3 cellule 3</option>
+
+                <option value="E4c1">Ecolab 4 cellule 1</option>
+                <option value="E4c2">Ecolab 4 cellule 2</option>
+                <option value="E4c3">Ecolab 4 cellule 3</option>
+
+                <option value="E5c1">Ecolab 5 cellule 1</option>
+                <option value="E5c2">Ecolab 5 cellule 2</option>
+                <option value="E5c3">Ecolab 5 cellule 3</option>
+
+                <option value="E6c1">Ecocube cellule 1</option>
+                <option value="E6c2">Ecocube cellule 2</option>
+                <option value="E6c3">Ecocube cellule 3</option>
+            </select><br>
+        <button type="submit">AJOUTER CETTE EXPERIENCE</button>
+    </form>
+
+
+</body>
+</html>
+<!-- <p>Climat : </p><input value=""><br> -->
+<!-- <p>Temperature : </p><input value="8.100000381469727"><br> -->
+<!-- <p>Température de pluie : </p><input value="2.4000000953674316"><br> -->
+<!-- <p>Température consigne : </p><input value="20"><br> -->

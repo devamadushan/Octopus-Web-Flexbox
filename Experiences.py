@@ -28,12 +28,9 @@ class Experience(Base):
 
 
     # Relation ONE TO MANY
-    ##cellule = Column(String(50), ForeignKey('cellule.nom')) 
-    ##cellules = relationship('cellule', backref='experience')
+   
     cellules = relationship('Cellule', backref='experience') 
-    cellule_id = 
+   
     
 
 Base.metadata.create_all(DB_URL)
-
-
