@@ -10,6 +10,9 @@ experience1 = experiences[5]
 cellules = session.query(Cellule).all() 
 historiques = session.query(HistoriqueCellule).all()
 
+def get_all_experience():
+    return experiences
+
 def get_cell_by_name(name):
     for cellule in cellules:
         if cellule.nom == name:
@@ -18,9 +21,15 @@ def get_cell_by_name(name):
 
 def get_cell_by_id(id_cellule):
     for cellule in cellules:
-        if cellule.ecolab_id == id_cellule:
+        if cellule.id == id_cellule:
             return cellule
 
+def get_experience_avenir():
+    result = []
+    for experience in experiences:
+        if experience.status == "à venir":
+            result.append(experience)
+    return result
 
 def get_experience_by_id(id_experience):
     try :
@@ -36,13 +45,11 @@ def get_historique_by_id(cellule_id):
     result = []
     for historique in historiques:
         if historique.cellule_id == cellule_id:
-            cellule = get_cell_by_id(cellule_id)
-            ##### problemme 
-            if cellule.experience_id:
-                experience = get_experience_by_id(cellule.experience_id)
-                result.append({"historique": historique, "cellule": cellule, "experience": experience})
-            else :
-                result.append({"historique": historique, "cellule": cellule})
+
+            cellule = get_cell_by_id(historique.cellule_id)
+            experience = get_experience_by_id(historique.cellule_experience_id)
+            print("jnioeff,klf,erl,kl,flnfjklrn",cellule)
+            result.append({"historique": historique, "cellule": cellule, "experience": experience})
     return result
 
 def get_experience_of_cellule(cellule_id):
@@ -61,9 +68,8 @@ def get_experience_by_id(id):
 
 
 cell = get_cell_by_name('E2C1')
-experience = get_historique_by_id(2)
-
-print(experience)
+blabla = get_experience_avenir
+print(blabla)
 # def cel(idex):
 #     cell = cellules['index']
 #     return cell

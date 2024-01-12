@@ -6,7 +6,7 @@ from conn import utilisateur,session, password, base_de_donne, port, Base
 from Historique import HistoriqueCellule
 from Experiences import Experience
 from Cellules import Cellule
-from read_db import get_cell_by_name, get_historique_by_id , get_experience_of_cellule
+from read_db import get_cell_by_name, get_historique_by_id , get_experience_of_cellule, get_all_experience , get_experience_avenir
 
 
 
@@ -25,23 +25,24 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{passwor
 
 #     return redirect('http://10.118.10.23:5000')
 
-@app.route('/detail', methods=['Post'])
+@app.route('/detail')
 def detail():
     try:
-        data = requests.get('http://10.119.20.100:8080/')
-        info = data.json()
-        value = request.form.get('name')
-        exp = list(value)
-        ecolab = exp[0]
-        cell = exp[1]
+        # data = requests.get('http://10.119.20.100:8080/')
+        # info = data.json()
+        # value = request.form.get('name')
+        # exp = list(value)
+        # ecolab = exp[0]
+        # cell = exp[1]
 
-        lieu = "E"+ecolab+"C"+ cell
+        # lieu = "E"+ecolab+"C"+ cell
+        lieu = "E6C3"
         cellule = get_cell_by_name(lieu)
         experienceEncours = get_experience_of_cellule(cellule.id)
         historique = get_historique_by_id(cellule.id)
-
-    
-        return render_template('detail.html',nom_cellule=lieu, json = info,
+        all_experience = get_all_experience()
+        experience_avenir = get_experience_avenir()
+        return render_template('detail.html',experience_avenir = experience_avenir , all_experience=all_experience,nom_cellule=lieu, 
                            cellule = cellule, experience=experienceEncours, historique= historique )
     except requests.exceptions.RequestException as e:
         return render_template('error.html', error_message=str(e))
@@ -54,4 +55,4 @@ def detail():
 
 
 if __name__ == "__main__":
-    app.run(host="10.118.10.95",port=5000, debug=True)
+    app.run(host="",port=5000, debug=True)

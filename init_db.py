@@ -32,6 +32,7 @@ microbe= Experience(nom="Microbe For",status="à venir")
 climate= Experience(nom="Climate",status="à venir")
 agroserv= Experience(nom="AgroServ",status="à venir")
 
+pasDexperience = Experience(nom="pas d'experience")
 
 bioteca = Experience(date_debut='2023/04/01', date_fin='2023/09/01', nom="BIOTECA",status="Terminés")
 oasis = Experience(date_debut='2022/10/01', date_fin='2023/01/01', nom="Oasis",status="Terminés")
