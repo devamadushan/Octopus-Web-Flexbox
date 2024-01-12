@@ -22,9 +22,10 @@ class Experience(Base):
     __tablename__ = 'experience'
 
     id = Column(Integer, primary_key=True)
-    date_debut = Column(DATE, nullable=False)
+    date_debut = Column(DATE)
     date_fin = Column(DATE)
     nom = Column(String(255), nullable=False)
+    status = Column(String(255))
 
 
     # Relation ONE TO MANY
