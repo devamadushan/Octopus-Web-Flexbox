@@ -48,7 +48,7 @@ def get_historique_by_id(cellule_id):
 
             cellule = get_cell_by_id(historique.cellule_id)
             experience = get_experience_by_id(historique.cellule_experience_id)
-            print("jnioeff,klf,erl,kl,flnfjklrn",cellule)
+            #print("jnioeff,klf,erl,kl,flnfjklrn",cellule)
             result.append({"historique": historique, "cellule": cellule, "experience": experience})
     return result
 
@@ -66,10 +66,33 @@ def get_experience_by_id(id):
             return experience
     return None
 
+def nouvelle_experience_de_cellule(id_cellule,id_experience):
+    global session
+    try :
+        cellule = get_cell_by_id(id_cellule)
+        cellule.experience_id = id_experience
+        session.commit()
+        return "Mise à jour réussie"
+    except Exception as e:
+        return f"Une erreur s'est produite : {str(e)}"
+    
+def nouvelle_historique(id_cellule,id_experience):
+    global session
+    try:
+        new_historique = HistoriqueCellule(cellule_id=id_cellule,cellule_experience_id=id_experience,action="Ajout d'une nouvelle Experience dans la cellule")
+        session.add(new_historique)
+        session.commit()
+        return "c'est bon"
+    except Exception as e:
+        return f"Une erreur s'est produite : {str(e)}"
+    
+#def update_experience():
 
-cell = get_cell_by_name('E2C1')
-blabla = get_experience_avenir
-print(blabla)
+    
+
+#cell = nouvelle_historique(18,20)
+#print(cell)
+#print(blabla)
 # def cel(idex):
 #     cell = cellules['index']
 #     return cell
