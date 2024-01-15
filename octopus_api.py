@@ -9,7 +9,7 @@ pip instal requests
 
 from flask import Flask, render_template
 from flask_restful import Resource, Api, reqparse, abort
-from conn import cursor
+
 import json
 import random
 

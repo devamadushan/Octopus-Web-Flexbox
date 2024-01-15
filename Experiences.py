@@ -25,7 +25,7 @@ class Experience(Base):
     date_debut = Column(DATE)
     date_fin = Column(DATE)
     nom = Column(String(255), nullable=False)
-    status = Column(String(255))
+    etat_experience = Column(String(255))
 
 
     # Relation ONE TO MANY

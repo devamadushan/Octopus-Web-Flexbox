@@ -24,10 +24,10 @@ def get_cell_by_id(id_cellule):
         if cellule.id == id_cellule:
             return cellule
 
-def get_experience_avenir():
+def get_experience_avenir_encours():
     result = []
     for experience in experiences:
-        if experience.status == "à venir":
+        if experience.etat_experience == "à venir" or experience.etat_experience == "En cours":
             result.append(experience)
     return result
 
@@ -42,14 +42,16 @@ def get_experience_by_id(id_experience):
     
 
 def get_historique_by_id(cellule_id):
+    global session
+    historiques = session.query(HistoriqueCellule).all()
     result = []
     for historique in historiques:
         if historique.cellule_id == cellule_id:
 
             cellule = get_cell_by_id(historique.cellule_id)
             experience = get_experience_by_id(historique.cellule_experience_id)
-            #print("jnioeff,klf,erl,kl,flnfjklrn",cellule)
             result.append({"historique": historique, "cellule": cellule, "experience": experience})
+    session.commit()
     return result
 
 def get_experience_of_cellule(cellule_id):
@@ -77,20 +79,36 @@ def nouvelle_experience_de_cellule(id_cellule,id_experience):
         return f"Une erreur s'est produite : {str(e)}"
     
 def nouvelle_historique(id_cellule,id_experience):
+    
     global session
     try:
-        new_historique = HistoriqueCellule(cellule_id=id_cellule,cellule_experience_id=id_experience,action="Ajout d'une nouvelle Experience dans la cellule")
+        new_historique = HistoriqueCellule(cellule_id=id_cellule,cellule_experience_id=id_experience,status="En cours",action="Ajout d'une nouvelle expérience à la cellule")
         session.add(new_historique)
         session.commit()
         return "c'est bon"
     except Exception as e:
         return f"Une erreur s'est produite : {str(e)}"
     
-#def update_experience():
-
+def update_historique(cellule_id):
+    global session
+    historiques = session.query(HistoriqueCellule).all()
+    try :
+        for historique in historiques:
+            if historique.cellule_id == cellule_id and historique.status == "En cours":
+                historique.status = "Terminés"
+                session.commit()
+        return "mise a jour reussi !"
+    except Exception as e:
+        return f"Une erreur s'est produite : {str(e)}"
     
 
-#cell = nouvelle_historique(18,20)
+cell = get_historique_by_id(11)
+#print(cell)
+for i in cell:
+    for o in i:
+        print(o)
+
+#print(cell)
 #print(cell)
 #print(blabla)
 # def cel(idex):

@@ -27,6 +27,7 @@ class HistoriqueCellule(Base):
 
     cellule_id= Column(Integer, ForeignKey('cellules.id'))
     cellule_experience_id = Column(Integer, ForeignKey('experience.id'))
+    status = Column(String(255), nullable=False)
     action = Column(String(255), nullable=False)
     
 
