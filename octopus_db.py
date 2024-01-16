@@ -1,109 +1,222 @@
-from flask import Flask 
-import requests
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request, redirect, url_for
-from conn import utilisateur,session, password, base_de_donne, port, Base
-from Historique import HistoriqueCellule
+from conn import session
 from Experiences import Experience
 from Cellules import Cellule
-from read_db import get_cell_by_name,get_cellule_name_from_id,get_experience_by_id, get_historique_by_id , get_experience_of_cellule, get_all_experience , get_experience_avenir_encours, nouvelle_historique, nouvelle_experience_de_cellule, update_historique, verification_experience
+from Historique import HistoriqueCellule
+from sqlalchemy.orm import joinedload
+from pprint import pprint
 
+# experiences = session.query(Experience).all()
+# cellules = session.query(Cellule).all() 
+# historiques = session.query(HistoriqueCellule).all()
 
+class Octopus:
+    def __init__(self):
+        self.experiences = session.query(Experience).all()
+        self.cellules = session.query(Cellule).all()
+        self.historique = session.query(HistoriqueCellule).all()
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{password}@localhost:{port}/{base_de_donne}'
-
-
- #methods=['POST']
-@app.route('/detail',methods=['POST'])
-def detail():
-    global session
-    try:
-        data = requests.get('http://10.119.20.100:8080/')
-        #data = requests.get('http://127.0.0.1:9000/')
-        info = data.json() 
-        lieu =request.form.get('name')
-        ecolab = lieu[1]
-        cell =  lieu[3]
-        jsonEcolab = f"ecolab_{ecolab}"
-        jsonCellule = f"Cellule_{cell}"
-        cellule = get_cell_by_name(lieu)
-        experienceEncours = cellule.experience_id
-        historique = get_historique_by_id(cellule.id)
-        experience_avenir_encours = get_experience_avenir_encours()
+    def update_database(self):
+        global session
         session.commit()
-        return render_template('detail.html',experience_avenir_encours = experience_avenir_encours ,nom_cellule=lieu, 
-                           cellule = cellule, experience=experienceEncours,info = info, historique= historique, jsonEcolab = jsonEcolab, jsonCellule=jsonCellule )
-    except requests.exceptions.RequestException as e:
-        return render_template('error.html', error_message=str(e))
+        return "c'est bon"
 
-
-@app.route('/nouvelle-experience-de-cellule', methods=['POST'])
-def nouvelle_experience_dans_cellule():
-    global session
-    experience_id= int(request.form.get('experience'))
-    verification = verification_experience(experience_id)
-    
-    try: 
-        cellule_id = int(request.form.get('cellule'))
-        cellule_nom = get_cellule_name_from_id(cellule_id)
-        experience_encours = int(request.form.get('experienceEnCours'))
-        update_historiqu = update_historique(cellule_id)
-        mise_a_jour_cellule = nouvelle_experience_de_cellule(cellule_id,experience_id)
-        ajout_historique = nouvelle_historique(cellule_id,experience_id)
-
+    def get_all_experience(self):
+        global session
+        experiences = session.query(Experience).all()
         session.commit()
-        return render_template('success.html',cellule = cellule_nom)
+        return experiences
     
-    except requests.exceptions.RequestException as e:
-        return render_template('error.html', error_message=str(e))
+    def get_cellule_name_from_id(self, id_cellule):
+        for cellule in self.cellules:
+            if cellule.id == id_cellule:
+                return cellule.nom
+    
+    def get_cellule_by_name(self,name):
+        for cellule in self.cellules:
+            if cellule.nom == name:
+                return cellule
+        return None
+    def get_cellule_by_id(self,id_cellule):
+        for cellule in self.cellules:
+            if cellule.id == id_cellule:
+                return cellule
+    def get_futur_and_current_experience(self):
+        result = []
+        for experience in self.experiences:
+            if experience.etat_experience == "à venir" or experience.etat_experience == "En cours":
+                result.append(experience)
+        return result
 
-@app.route('/experiences')
-def experiences():
-    experiences = get_all_experience()
-    return render_template('experiences.html',experiences=experiences)
+    def get_experience_by_id(self,id_experience):
+        try :
+            for experience in self.experiences:
+                if experience.id == id_experience:
+                    return experience
+        except Exception as e:  
+            print(f"Erreur lors de la récupération de l'expérience par ID : {str(e)}")
+            return None
+        
+    def get_historique_by_id(self,cellule_id):
+        global session
+        historiques = session.query(HistoriqueCellule).all()
+        result = []
+        for historique in historiques:
+            if historique.cellule_id == cellule_id:
 
-@app.route('/add-experiences')
-def addExperiences():
-    return render_template('addExperience.html',experiences=experiences)
+                cellule = self.get_cellule_by_id(historique.cellule_id)
+                experience = self.get_experience_by_id(historique.cellule_experience_id)
+                result.append({"historique": historique, "cellule": cellule, "experience": experience})
+        session.commit()
+        return result
 
-@app.route('/traitement-add-experiences',methods=['POST'])
-def traitementAddExperiences():
-    global session
-    nom = request.form.get('nom')
-    date_debut = request.form.get('date_debut')
-    date_fin = request.form.get('date_fin')
-    etat = request.form.get('etat_experience')
-    newExperience = Experience(nom=nom,date_debut=date_debut,date_fin=date_fin,etat_experience=etat)
-    session.add(newExperience)
-    session.commit()
-    return redirect(url_for('experiences'))
+    def get_experience_of_cellule(self,cellule_id):
+        for cellule in self.cellules:
+            if cellule.id == cellule_id:
+                return self.get_experience_by_id(cellule.experience_id)
+        return None
+    
+    def get_experience_by_id(self,id):
+        for experience in self.experiences:
+            if experience.id == id :
+                return experience
+        return None
 
-@app.route('/edit-experiences',methods=['POST'])
-def editExperiences():
-    id_experience = int(request.form.get('id_experience'))
-    experience = get_experience_by_id(id_experience)
-    #print(experience)
-    return render_template('editExperience.html',experience=experience)
+    def new_experience_of_cellule(self,id_cellule,id_experience):
+        global session
+        try :
+            cellule = self.get_cellule_by_id(id_cellule)
+            cellule.experience_id = id_experience
+            session.commit()
+            return "Mise à jour réussie"
+        except Exception as e:
+            return f"Une erreur s'est produite : {str(e)}"
+    
+    def new_historique(self,id_cellule,id_experience):
+        global session
+        try:
+            new_historique = HistoriqueCellule(cellule_id=id_cellule,cellule_experience_id=id_experience,status="En cours",action="Ajout d'une nouvelle expérience à la cellule")
+            session.add(new_historique)
+            session.commit()
+            return "c'est bon"
+        except Exception as e:
+            return f"Une erreur s'est produite : {str(e)}"
+    
+    def update_historique(self,cellule_id):
+        global session
+        historiques = session.query(HistoriqueCellule).all()
+        try :
+            for historique in historiques:
+                if historique.cellule_id == cellule_id and historique.status == "En cours":
+                    historique.status = "Terminés"
+                    session.commit()
+            return "mise a jour reussi !"
+        except Exception as e:
+            return f"Une erreur s'est produite : {str(e)}"
+    
 
-@app.route('/traitement-edit-experiences',methods=['POST'])
-def traitementEditExperiences():
-    global session
-    id_experience = int(request.form.get('id_experience'))
-    nom = request.form.get('nom')
-    date_debut = request.form.get('date_debut')
-    date_fin = request.form.get('date_fin')
-    etat = request.form.get('etat_experience')
 
-    experience = get_experience_by_id(id_experience)
-    experience.nom=nom
-    if date_debut:
-        experience.date_debut = date_debut
-    if date_fin:
-        experience.date_fin = date_fin
-    experience.etat_experience = etat   
-    session.commit()
-    return redirect(url_for('experiences'))
 
-if __name__ == "__main__":
-    app.run(host="10.118.10.109",port=5000, debug=True)
+
+# def get_all_experience():
+#     return experiences
+
+# def get_cellule_name_from_id(id_cellule):
+#     for cellule in cellules:
+#         if cellule.id == id_cellule:
+#             return cellule.nom
+
+# def get_cell_by_name(name):
+#     for cellule in cellules:
+#         if cellule.nom == name:
+#             return cellule
+#     return None #
+
+# def get_cell_by_id(id_cellule):
+#     for cellule in cellules:
+#         if cellule.id == id_cellule:
+#             return cellule#
+        
+
+# def get_experience_avenir_encours():
+#     result = []
+#     for experience in experiences:
+#         if experience.etat_experience == "à venir" or experience.etat_experience == "En cours":
+#             result.append(experience)
+#     return result#
+
+# def get_experience_by_id(id_experience):
+#     try :
+#         for experience in experiences:
+#             if experience.id == id_experience:
+#                 return experience
+#     except Exception as e:  
+#         print(f"Erreur lors de la récupération de l'expérience par ID : {str(e)}")
+#         return None#
+    
+
+# def get_historique_by_id(cellule_id):
+#     global session
+#     historiques = session.query(HistoriqueCellule).all()
+#     result = []
+#     for historique in historiques:
+#         if historique.cellule_id == cellule_id:
+
+#             cellule = get_cell_by_id(historique.cellule_id)
+#             experience = get_experience_by_id(historique.cellule_experience_id)
+#             result.append({"historique": historique, "cellule": cellule, "experience": experience})
+#     session.commit()
+#     return result#
+
+# def get_experience_of_cellule(cellule_id):
+#     for cellule in cellules:
+#         if cellule.id == cellule_id:
+#             return get_experience_by_id(cellule.experience_id)
+#     return None    #
+
+
+
+# def get_experience_by_id(id):
+#     for experience in experiences:
+#         if experience.id == id :
+#             return experience
+#     return None #
+
+# def nouvelle_experience_de_cellule(id_cellule,id_experience):
+#     global session
+#     try :
+#         cellule = get_cell_by_id(id_cellule)
+#         cellule.experience_id = id_experience
+#         session.commit()
+#         return "Mise à jour réussie"
+#     except Exception as e:
+#         return f"Une erreur s'est produite : {str(e)}" #
+    
+# def nouvelle_historique(id_cellule,id_experience):
+    
+#     global session
+#     try:
+#         new_historique = HistoriqueCellule(cellule_id=id_cellule,cellule_experience_id=id_experience,status="En cours",action="Ajout d'une nouvelle expérience à la cellule")
+#         session.add(new_historique)
+#         session.commit()
+#         return "c'est bon"
+#     except Exception as e:
+#         return f"Une erreur s'est produite : {str(e)}" #
+    
+# def update_historique(cellule_id):
+#     global session
+#     historiques = session.query(HistoriqueCellule).all()
+#     try :
+#         for historique in historiques:
+#             if historique.cellule_id == cellule_id and historique.status == "En cours":
+#                 historique.status = "Terminés"
+#                 session.commit()
+#         return "mise a jour reussi !"
+#     except Exception as e:
+#         return f"Une erreur s'est produite : {str(e)}"
+    
+
+octopus = Octopus()
+
+
+#for cell in experience1.cellules:
+    #print(experience1.id,cell.id,cell.nom)
