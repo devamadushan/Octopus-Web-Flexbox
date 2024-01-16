@@ -6,12 +6,16 @@ from sqlalchemy.orm import joinedload
 from pprint import pprint
 
 experiences = session.query(Experience).all()
-experience1 = experiences[5]
 cellules = session.query(Cellule).all() 
 historiques = session.query(HistoriqueCellule).all()
 
 def get_all_experience():
     return experiences
+
+def get_cellule_name_from_id(id_cellule):
+    for cellule in cellules:
+        if cellule.id == id_cellule:
+            return cellule.nom
 
 def get_cell_by_name(name):
     for cellule in cellules:
@@ -23,6 +27,13 @@ def get_cell_by_id(id_cellule):
     for cellule in cellules:
         if cellule.id == id_cellule:
             return cellule
+        
+def verification_experience(experience_id):
+    for experience in experiences:
+        if experience.id == experience_id:
+            return True
+        else :
+            return False
 
 def get_experience_avenir_encours():
     result = []

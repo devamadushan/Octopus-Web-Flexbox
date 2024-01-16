@@ -9,39 +9,46 @@
     <title>Détail</title>
 </head>
 <style>
-    .body{
-        background-color: black;
-    }
-   
+
 </style>
 
 
 <body>
-    
+
+    <div class="retour">
+    <form action="http://10.118.10.23:5000">
+    <button type="submit" class="btn btn-primary">Retour</button>
+    </form>  
+  </div>
+
+
     <h1 class="titre-historique">Détail de {{ nom_cellule }}</h1>
-   
+   <br>
+
     <div class="param">
-    <table class="table parametre">
+    <table class="table">
       <tr>
       <td>Temperature Reprise</td>
-      <td>{{ info['ecolab_2']['Cellule_3']['params']['temperature_reprise'] | round }}</td>
+      <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_reprise'] | round }}</td>
       </tr>
       <tr>
         <td>Temperature Eau Pluie</td>
-        <td>{{ info['ecolab_2']['Cellule_3']['params']['temperature_eau_pluie']| round  }}</td>
+        <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_eau_pluie']| round  }}</td>
       </tr>
       <tr>
         <td>Temperature Consigne </td>
-        <td>{{ info['ecolab_2']['Cellule_3']['params']['temperature_consigne']| round }}</td>
+        <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_consigne']| round }}</td>
       </tr>
     </table>
     </div>
+
+    
     <br>
     <div class="historique">
       <table class="table">
       <h2 class="titre-historique">L'historique</h2>      
         <tr>
-          <th>Date et Heur</th>
+          <th>Date et Heure</th>
           <th>Les experiences</th>
           <th>Date de Debut</th>
           <th>Date de Fin</th>
@@ -69,7 +76,7 @@
       <div class="form-group formExp">
         <label for="exampleFormControlSelect1">Affecter une nouvelle expérience :</label>
         <select class="form-control" id="exampleFormControlSelect1" name="experience">
-          <option>Choisir l'expérience</option>
+          <option value="" disabled >Choisir l'expérience</option>
           {% for experience in experience_avenir_encours %}
           <option value="{{ experience.id }}">{{ experience.nom }} ({{ experience.etat_experience }})</option>
           {% endfor %}

@@ -6,34 +6,29 @@ from conn import utilisateur,session, password, base_de_donne, port, Base
 from Historique import HistoriqueCellule
 from Experiences import Experience
 from Cellules import Cellule
-from read_db import get_cell_by_name, get_historique_by_id , get_experience_of_cellule, get_all_experience , get_experience_avenir_encours, nouvelle_historique, nouvelle_experience_de_cellule, update_historique
+from read_db import get_cell_by_name,get_cellule_name_from_id,get_experience_by_id, get_historique_by_id , get_experience_of_cellule, get_all_experience , get_experience_avenir_encours, nouvelle_historique, nouvelle_experience_de_cellule, update_historique, verification_experience
 
 
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{password}@localhost:{port}/{base_de_donne}'
 
+
  #methods=['POST']
-@app.route('/detail')
+@app.route('/detail',methods=['POST'])
 def detail():
+    global session
     try:
-        global session
-        #data = requests.get('http://10.119.20.100:8080/')
-        data = requests.get('http://127.0.0.1:9000/')
+        data = requests.get('http://10.119.20.100:8080/')
+        #data = requests.get('http://127.0.0.1:9000/')
         info = data.json() 
-        #value =request.form.get('name')
-        
-        #exp = list(value)
-        ecolab = 2 #exp[0]
-        cell =  1 #exp[1]
-       
-        lieu = f"E{ecolab}C{cell}"
+        lieu =request.form.get('name')
+        ecolab = lieu[1]
+        cell =  lieu[3]
         jsonEcolab = f"ecolab_{ecolab}"
         jsonCellule = f"Cellule_{cell}"
-        lieu = "E5C3"
         cellule = get_cell_by_name(lieu)
         experienceEncours = cellule.experience_id
-        
         historique = get_historique_by_id(cellule.id)
         experience_avenir_encours = get_experience_avenir_encours()
         session.commit()
@@ -47,19 +42,68 @@ def detail():
 def nouvelle_experience_dans_cellule():
     global session
     experience_id= int(request.form.get('experience'))
-    cellule_id = int(request.form.get('cellule'))
-    experience_encours = request.form.get('experienceEnCours')
-    update_historiqu = update_historique(cellule_id)
-    mise_a_jour_cellule = nouvelle_experience_de_cellule(cellule_id,experience_id)
-    ajout_historique = nouvelle_historique(cellule_id,experience_id)
-   
+    verification = verification_experience(experience_id)
     
+    try: 
+        cellule_id = int(request.form.get('cellule'))
+        cellule_nom = get_cellule_name_from_id(cellule_id)
+        experience_encours = int(request.form.get('experienceEnCours'))
+        update_historiqu = update_historique(cellule_id)
+        mise_a_jour_cellule = nouvelle_experience_de_cellule(cellule_id,experience_id)
+        ajout_historique = nouvelle_historique(cellule_id,experience_id)
+
+        session.commit()
+        return render_template('success.html',cellule = cellule_nom)
+    
+    except requests.exceptions.RequestException as e:
+        return render_template('error.html', error_message=str(e))
+
+@app.route('/experiences')
+def experiences():
+    experiences = get_all_experience()
+    return render_template('experiences.html',experiences=experiences)
+
+@app.route('/add-experiences')
+def addExperiences():
+    return render_template('addExperience.html',experiences=experiences)
+
+@app.route('/traitement-add-experiences',methods=['POST'])
+def traitementAddExperiences():
+    global session
+    nom = request.form.get('nom')
+    date_debut = request.form.get('date_debut')
+    date_fin = request.form.get('date_fin')
+    etat = request.form.get('etat_experience')
+    newExperience = Experience(nom=nom,date_debut=date_debut,date_fin=date_fin,etat_experience=etat)
+    session.add(newExperience)
     session.commit()
-   
-    return redirect(url_for('detail'))
-    
+    return redirect(url_for('experiences'))
 
+@app.route('/edit-experiences',methods=['POST'])
+def editExperiences():
+    id_experience = int(request.form.get('id_experience'))
+    experience = get_experience_by_id(id_experience)
+    #print(experience)
+    return render_template('editExperience.html',experience=experience)
 
+@app.route('/traitement-edit-experiences',methods=['POST'])
+def traitementEditExperiences():
+    global session
+    id_experience = int(request.form.get('id_experience'))
+    nom = request.form.get('nom')
+    date_debut = request.form.get('date_debut')
+    date_fin = request.form.get('date_fin')
+    etat = request.form.get('etat_experience')
+
+    experience = get_experience_by_id(id_experience)
+    experience.nom=nom
+    if date_debut:
+        experience.date_debut = date_debut
+    if date_fin:
+        experience.date_fin = date_fin
+    experience.etat_experience = etat   
+    session.commit()
+    return redirect(url_for('experiences'))
 
 if __name__ == "__main__":
-    app.run(host="",port=5000, debug=True)
+    app.run(host="10.118.10.109",port=5000, debug=True)
