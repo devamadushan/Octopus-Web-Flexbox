@@ -1,3 +1,10 @@
+'''
+Flask : pip install SQLAlchemy
+
+'''
+
+############################################################################################################
+
 from conn import session
 from Experiences import Experience
 from Cellules import Cellule
@@ -5,11 +12,10 @@ from Historique import HistoriqueCellule
 from sqlalchemy.orm import joinedload
 from pprint import pprint
 
-# experiences = session.query(Experience).all()
-# cellules = session.query(Cellule).all() 
-# historiques = session.query(HistoriqueCellule).all()
+############################################################################################################
 
-class Octopus:
+
+class OctopusDB:
     def __init__(self):
         self.experiences = session.query(Experience).all()
         self.cellules = session.query(Cellule).all()
@@ -215,7 +221,7 @@ class Octopus:
 #         return f"Une erreur s'est produite : {str(e)}"
     
 
-octopus = Octopus()
+octopus = OctopusDB()
 
 
 #for cell in experience1.cellules:

@@ -1,6 +1,6 @@
 '''
-pip install Flask-SQLAlchemy
-
+Flask  SQLALchemy : pip install Flask-SQLAlchemy
+SQLALchemy : pip install SQLAlchemy
 '''
 ##############################################################################################
 

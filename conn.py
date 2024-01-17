@@ -1,14 +1,17 @@
-from sqlalchemy import create_engine, text
+'''
+SQLALchemy : pip install SQLAlchemy
+Urlib :pip install urllib3
+'''
+
+################################################################################################################
+
+from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from urllib.parse import quote_plus
 from sqlalchemy.orm import sessionmaker
 
-'''
--pip install sqlalchemy
- -pip install pymysql
-
-'''
+################################################################################################################
 
 utilisateur = "Deva"
 password = "sio"

@@ -1,17 +1,14 @@
 '''
-pip install Flask-SQLAlchemy
-
+Flask  SQLALchemy : pip install Flask-SQLAlchemy
+SQLALchemy : pip install SQLAlchemy
 '''
 ##############################################################################################
-
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer,String,DATE, ForeignKey
 from sqlalchemy.orm import relationship
 from flask import Flask
 from conn import Base, DB_URL
-
-
 
 ##############################################################################################
 

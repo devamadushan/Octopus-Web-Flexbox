@@ -1,4 +1,10 @@
-from flask import Flask 
+'''
+Flask : pip install flask
+SQLALchemy : pip install Flask-SQLAlchemy
+
+'''
+
+import json
 import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, redirect, url_for
@@ -8,10 +14,20 @@ from Experiences import Experience
 from Cellules import Cellule
 from octopus_db import octopus
 
-
+############################################################################################################
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{password}@localhost:{port}/{base_de_donne}'
+
+############################################################################################################
+
+with open('config.json', 'r') as config:
+    config = json.load(config)
+    ip = config['IP']
+    port = config['Port']
+    debug = config['Debug']
+
+############################################################################################################
 
 
  #methods=['POST']
@@ -20,13 +36,14 @@ def detail():
     global session
     try:
         #Collection of parameters of cells
-        #data = requests.get('http://10.119.20.100:8080/')
-        data = requests.get('http://127.0.0.1:9000/')
+        data = requests.get('http://10.119.20.100:8080/')
+        #data = requests.get('http://127.0.0.1:9000/')
         parameters = data.json()
 
         #I collect the name of the cell that the client clicked using the POST method.
         cellule_name =request.form.get('name')
         #cellule_name = "E2C3"
+
         #I'm trying to get the Ecolab and Cell numbers by their names
         ecolab = cellule_name[1]
         cell =  cellule_name[3]
@@ -142,4 +159,4 @@ def processToEditExperiences():
     return redirect(url_for('experiences'))
 
 if __name__ == "__main__":
-    app.run(host="",port=5000, debug=True)
+    app.run(host=ip,port=port, debug=debug)

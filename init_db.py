@@ -2,10 +2,6 @@
 
 ###################################################################################################
 
-
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
 from Ecolab import Ecolab
 from Experiences import Experience
 from Cellules import Cellule
