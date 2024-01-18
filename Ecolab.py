@@ -4,18 +4,15 @@ SQLALchemy : pip install SQLAlchemy
 '''
 ##############################################################################################
 
-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer,String,DATE, ForeignKey
 from sqlalchemy.orm import relationship
 from flask import Flask
 from conn import Base, DB_URL
 
-
-
 ##############################################################################################
 
-db = SQLAlchemy()
+# Auteur: Deva
 
 class Ecolab(Base):
     __tablename__ = 'ecolab'

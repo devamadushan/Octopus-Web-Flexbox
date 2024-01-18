@@ -29,6 +29,7 @@ with open('config.json', 'r') as config:
 
 ############################################################################################################
 
+# Auteur: Deva
 
  #methods=['POST']
 @app.route('/detail',methods=['POST'])

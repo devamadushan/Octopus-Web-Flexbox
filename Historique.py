@@ -14,6 +14,7 @@ from conn import Base, DB_URL
 
 ##################################################################################################################
 
+# Auteur: Deva
 
 class HistoriqueCellule(Base):
     __tablename__ = 'historique_cellule'

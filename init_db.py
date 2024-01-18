@@ -10,6 +10,8 @@ from conn import utilisateur,session, password, base_de_donne, port, Base
 
 ###################################################################################################
 
+# Auteur: Deva
+
 '''Objets des experiences'''
 embl= Experience(date_debut='2023/12/01' ,nom="EMBL-EXPOCER",etat_experience="En cours")
 gente= Experience(date_debut='2023/08/01' ,nom="Gente-POP",etat_experience="En cours")

@@ -13,6 +13,8 @@ from sqlalchemy.orm import sessionmaker
 
 ################################################################################################################
 
+# Auteur: Deva
+
 utilisateur = "Deva"
 password = "sio"
 base_de_donne = "octopus"

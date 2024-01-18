@@ -12,7 +12,7 @@ from conn import Base, DB_URL
 
 ##############################################################################################
 
-db = SQLAlchemy()
+# Auteur: Deva
 
 
 class Experience(Base):
