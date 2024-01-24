@@ -7,15 +7,13 @@ SQLALchemy : pip install SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer,String,ForeignKey
 from flask import Flask
-from conn import Base , DB_URL
-from Experiences import Experience
+from Connexion import Base , DB_URL
+from Experience import Experience
 from Ecolab import Ecolab
 
 ##############################################################################################
 
 db = SQLAlchemy()
-
-
 
 class Cellule(Base):
     __tablename__= 'cellules'

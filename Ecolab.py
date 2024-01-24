@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer,String,DATE, ForeignKey
 from sqlalchemy.orm import relationship
 from flask import Flask
-from conn import Base, DB_URL
+from Connexion import Base, DB_URL
 
 ##############################################################################################
 

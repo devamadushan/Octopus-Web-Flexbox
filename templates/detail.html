@@ -12,41 +12,36 @@
 
 </style>
 
-
 <body>
-
     <div class="retour">
-    <form action="http://10.118.10.23:5000">
-    <button type="submit" class="btn btn-primary">Retour</button>
-    </form>  
-  </div>
-
-
+      <form action="{{url_for('retour')}}" method="POST">
+        <button type="submit" class="btn btn-primary">Retour</button>
+      </form>  
+    </div>
+    
     <h1 class="titre-historique">Détail de {{ nom_cellule }}</h1>
-   <br>
+    <br>
 
     <div class="param">
-    <table class="table">
-      <tr>
-      <td>Temperature Reprise</td>
-      <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_reprise'] | round }}</td>
-      </tr>
-      <tr>
-        <td>Temperature Eau Pluie</td>
-        <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_eau_pluie']| round  }}</td>
-      </tr>
-      <tr>
-        <td>Temperature Consigne </td>
-        <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_consigne']| round }}</td>
-      </tr>
-    </table>
+      <table class="table">
+        <tr>
+          <td>Temperature Reprise</td>
+          <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_reprise'] | round }}</td>
+        </tr>
+        <tr>
+          <td>Temperature Eau Pluie</td>
+          <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_eau_pluie']| round  }}</td>
+        </tr>
+        <tr>
+          <td>Temperature Consigne </td>
+          <td>{{ info[jsonEcolab][jsonCellule]['params']['temperature_consigne']| round }}</td>
+        </tr>
+      </table>
     </div>
-
-    
     <br>
     <div class="historique">
       <table class="table">
-      <h2 class="titre-historique">L'historique</h2>      
+        <h2 class="titre-historique">L'historique</h2>      
         <tr>
           <th>Date et Heure</th>
           <th>Les experiences</th>
@@ -54,50 +49,36 @@
           <th>Date de Fin</th>
           <th>Status</th>
           <th>Action</th>
-         
         </tr>
         {% for object in historique %}  
-        <tr>
-           
-            <th>{{ object.historique.timestamp }} </th>
+          <tr> 
+            <th>{{ object.historique.timestamp }}</th>
             <th>{{ object.experience.nom }}</th>
             <th>{{ object.experience.date_debut }}</th>
             <th>{{ object.experience.date_fin }}</th>
             <th>{{ object.historique.status }}</th>
             <th>{{ object.historique.action }}</th>
-        </tr>
+          </tr>
         {% endfor %}
-        
-    </table>
-    
+      </table>
     </div>
-
     <form action="{{ url_for('new_experience_in_cellule') }}" method="post">
       <div class="form-group formExp">
         <label for="exampleFormControlSelect1">Affecter une nouvelle expérience :</label>
         <select class="form-control" id="exampleFormControlSelect1" name="experience">
           <option value="" disabled >Choisir l'expérience</option>
           {% for experience in experience_avenir_encours %}
-          <option value="{{ experience.id }}">{{ experience.nom }} ({{ experience.etat_experience }})</option>
+            <option value="{{ experience.id }}">{{ experience.nom }} ({{ experience.etat_experience }})</option>
           {% endfor %}
         </select>
-        {% for object in historique %}  
-
+          {% for object in historique %}  
         <input type="hidden" name="cellule" value="{{ object.cellule.id }}">
         <input type="hidden" name="cellule_name" value="{{ object.cellule.nom }}">
         {% endfor %}
         <input type="hidden" name="experienceEnCours" value="{{ experience }}">
-        
         <br>
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
-    
-
-
 </body>
 </html>
-<!-- <p>Climat : </p><input value=""><br> -->
-<!-- <p>Temperature : </p><input value="8.100000381469727"><br> -->
-<!-- <p>Température de pluie : </p><input value="2.4000000953674316"><br> -->
-<!-- <p>Température consigne : </p><input value="20"><br> -->

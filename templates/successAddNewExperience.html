@@ -9,13 +9,12 @@
     <title>Success</title>
 </head>
 <body>
-    <form action="{{ url_for('experiences') }}" method="post">
-    <div class="messageSucces">
-    <h6 class="msgsucces"> L'expérience a été ajoutée avec succès dans la cellule.</h6>
-
-    
-    <button type="submit" class="btn btn-primary">Continuer</button>
-    </div>
+    <form action="{{ url_for('detail') }}" method="post">
+        <div class="messageSucces">
+            <h6 class="msgsucces"> L'expérience a été ajoutée avec succès dans la cellule.</h6>
+            <input type="hidden" name="name" value="{{ cellule }}">
+            <button type="submit" class="btn btn-primary">Continuer</button>
+        </div>
     </form>
 </body>
 </html>

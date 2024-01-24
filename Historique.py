@@ -7,10 +7,10 @@ SQLALchemy : pip install SQLAlchemy
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer,String,DATE, ForeignKey,DateTime,Enum
-from Cellules import Cellule
-from Experiences import Experience
+from Cellule import Cellule
+from Experience import Experience
 from datetime import datetime
-from conn import Base, DB_URL
+from Connexion import Base, DB_URL
 
 ##################################################################################################################
 
