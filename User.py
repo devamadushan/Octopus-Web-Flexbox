@@ -21,8 +21,8 @@ from flask_bcrypt import Bcrypt,generate_password_hash,check_password_hash
 
 
 
-class Utilisateur(Base):
-    __tablename__ = 'utilisateur'
+class User(Base):
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
     username = Column(String(50),nullable=False)

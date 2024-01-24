@@ -8,20 +8,20 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column, Integer,String,ForeignKey
 from flask import Flask
 from Connexion import Base , DB_URL
-from Experience import Experience
-from Ecolab import Ecolab
+from Experiment import Experiment
+from EcolabWeb import EcolabWeb
 
 ##############################################################################################
 
 db = SQLAlchemy()
 
-class Cellule(Base):
-    __tablename__= 'cellules'
+class Cells(Base):
+    __tablename__= 'cells'
     id = Column(Integer, primary_key=True)
     nom = Column(String(50), nullable=False)
-    experience_id = Column(Integer, ForeignKey('experience.id'))
-    ecolab_id = Column(Integer,ForeignKey('ecolab.id'))
-    #experience = relationship('Experience', back_populates='cellules')
+    Experiment_id = Column(Integer, ForeignKey('experiment.id'))
+    ecolabWeb_id = Column(Integer,ForeignKey('ecolabWeb.id'))
+    #Experiment = relationship('Experiment', back_populates='cellules')
 
     
 

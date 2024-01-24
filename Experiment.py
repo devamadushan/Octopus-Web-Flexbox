@@ -14,13 +14,20 @@ from Connexion import Base, DB_URL
 
 # Auteur: Deva
 
-class Ecolab(Base):
-    __tablename__ = 'ecolab'
+class Experiment(Base):
+    __tablename__ = 'experiment'
 
     id = Column(Integer, primary_key=True)
-    nom = Column(String(255),nullable=False)
+    date_debut = Column(DATE)
+    date_fin = Column(DATE)
+    nom = Column(String(255), nullable=False)
+    status_experiment = Column(String(255))
+
 
     # Relation ONE TO MANY
-    cellules = relationship('Cellule',backref='ecolab')
+   
+    cells = relationship('Cells', backref='experiment') 
+   
     
+
 Base.metadata.create_all(DB_URL)

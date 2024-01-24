@@ -17,10 +17,10 @@ import requests
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, redirect, url_for
 from Connexion import utilisateur,session, password, base_de_donne, port, Base, DB_URL
-from Historique import HistoriqueCellule
-from Experience import Experience
-from Cellule import Cellule
-from User import Utilisateur
+from History import Historiy_cells
+from Experiment import Experiment
+from Cells import Cells
+from User import User
 from OctopusDB import octopus
 
 ############################################################################################################
@@ -32,7 +32,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{passwor
 ############################################################################################################
 
 # Recovery of configuration informations
-with open('/home/luca/Bureau/ecolab/Ecolabs_test/ecolab2_api/pyResponsive/config.json', 'r') as config:
+with open('/home/deva/Bureau/Octopus_Web/Octopus_Web/config.json', 'r') as config:
     config = json.load(config)
     ip = config['IP']
     port = config['Port']
@@ -57,12 +57,13 @@ def index():
     global role
     try:
         # Retrieving data in Json Ecolab 2
-        ecolab2 = "http://10.119.20.100:8080/"
-        json_data2 = requests.get(ecolab2).json()
+        #ecolab2 = "http://10.119.20.100:8080/"
+        
 
         # Retrieving data in Json Ecolab 4
         ecolab4 = "http://10.119.40.100:8080/"
         json_data4 = requests.get(ecolab4).json()
+        json_data2 = requests.get(ecolab4).json()
        
         return render_template('index.html', role= role, info2=json_data2, info4=json_data4)
     except Exception as e:
@@ -96,44 +97,44 @@ def detail():
         #Obtaining the Cellule object using its name
         cellule = octopus.get_cellule_by_name(cellule_name)
         
-        #Obtaining the Experience object using its ID
-        experienceInProgress = cellule.experience_id
+        #Obtaining the Experiment object using its ID
+        ExperimentInProgress = cellule.Experiment_id
 
         #Obtaining a list of all historique of cellule using its ID
         historique = octopus.get_historique_by_id(cellule.id)
 
-        #Obtaining a list of all experience with satus "a venir" are "en cours"
-        future_and_current_experiences = octopus.get_futur_and_current_experience()
+        #Obtaining a list of all Experiment with satus "a venir" are "en cours"
+        future_and_current_Experiments = octopus.get_futur_and_current_Experiment()
         session.commit()
 
-        return render_template('detail.html',experience_avenir_encours = future_and_current_experiences ,nom_cellule=cellule_name, 
-                           cellule = cellule, experience=experienceInProgress,info = parameters, historique= historique, jsonEcolab = jsonEcolab, jsonCellule=jsonCellule )
+        return render_template('detail.html',Experiment_avenir_encours = future_and_current_Experiments ,nom_cellule=cellule_name, 
+                           cellule = cellule, Experiment=ExperimentInProgress,info = parameters, historique= historique, jsonEcolab = jsonEcolab, jsonCellule=jsonCellule )
     except requests.exceptions.RequestException as e:
         return render_template('error.html', error_message=str(e))
     
-# Experiences
-@app.route('/experiences')
-def experiences():
+# Experiments
+@app.route('/Experiments')
+def Experiments():
     global session
-    #Obtaining all experiences existing in the database
-    experiences = octopus.get_all_experience()
+    #Obtaining all Experiments existing in the database
+    Experiments = octopus.get_all_Experiment()
     session.commit()
-    return render_template('experience.html',experiences=experiences)
+    return render_template('Experiment.html',Experiments=Experiments)
 
-# Add experience
-@app.route('/add-experiences')
-def addExperience():
-    return render_template('addExperience.html')
+# Add Experiment
+@app.route('/add-Experiments')
+def addExperiment():
+    return render_template('addExperiment.html')
 
-# Edit experience
-@app.route('/edit-experiences',methods=['POST'])
-def editExperiences():
-    id_experience = int(request.form.get('id_experience'))
+# Edit Experiment
+@app.route('/edit-Experiments',methods=['POST'])
+def editExperiments():
+    id_Experiment = int(request.form.get('id_Experiment'))
 
-    #Obtaining the object of experience using its ID
-    experience = octopus.get_experience_by_id(id_experience)
-    #print(experience)
-    return render_template('editExperience.html',experience=experience)
+    #Obtaining the object of Experiment using its ID
+    Experiment = octopus.get_Experiment_by_id(id_Experiment)
+    #print(Experiment)
+    return render_template('editExperiment.html',Experiment=Experiment)
 
 ############################################################################################################
 # Action Methods 
@@ -200,13 +201,13 @@ def retour():
         print(f"Une erreur s'est produite : {e}")
         return "Erreur lors de la récupération des données depuis l'API."
 
-# Add experience passed
-@app.route('/new-experience-in-cellule', methods=['POST'])
-def new_experience_in_cellule():
+# Add Experiment passed
+@app.route('/new-Experiment-in-cellule', methods=['POST'])
+def new_Experiment_in_cellule():
     global session
     try: 
-        #Obtaining ID of experience using method POST
-        experience_id= int(request.form.get('experience')) 
+        #Obtaining ID of Experiment using method POST
+        Experiment_id= int(request.form.get('Experiment')) 
 
          #Obtaining ID of cellule using method POST
         cellule_id = int(request.form.get('cellule'))
@@ -215,57 +216,57 @@ def new_experience_in_cellule():
         cellule_name = octopus.get_cellule_name_from_id(cellule_id)
 
          #Obtaining the experiens in Progress
-        experienceInProgress = request.form.get('experienceEnCours')#int()
+        ExperimentInProgress = request.form.get('ExperimentEnCours')#int()
 
         #update column status of historique using cell ID
         update_historique = octopus.update_historique(cellule_id)
 
-        update_cellule = octopus.new_experience_of_cellule(cellule_id,experience_id)
-        add_historique = octopus.new_historique(cellule_id,experience_id)
+        update_cellule = octopus.new_Experiment_of_cellule(cellule_id,Experiment_id)
+        add_historique = octopus.new_historique(cellule_id,Experiment_id)
 
         session.commit()
-        return render_template('successAddExperienceInCellule.html',cellule = cellule_name)
+        return render_template('successAddExperimentInCellule.html',cellule = cellule_name)
     
     except requests.exceptions.RequestException as e:
         return render_template('error.html', error_message=str(e))
 
-# Add experience 
-@app.route('/process-add-experiences',methods=['POST'])
-def processToAddExperience():
+# Add Experiment 
+@app.route('/process-add-Experiments',methods=['POST'])
+def processToAddExperiment():
     global session
-    #Obtaining the new datas of experience for creat an object 
+    #Obtaining the new datas of Experiment for creat an object 
     name = request.form.get('nom')
     starting_date = request.form.get('date_debut')
     finishing_date = request.form.get('date_fin')
-    status = request.form.get('etat_experience')
-    newExperience = Experience(nom=name,date_debut=starting_date,date_fin=finishing_date,etat_experience=status)
-    session.add(newExperience)
+    status = request.form.get('etat_Experiment')
+    newExperiment = Experiment(nom=name,date_debut=starting_date,date_fin=finishing_date,etat_Experiment=status)
+    session.add(newExperiment)
     session.commit()
-    return redirect(url_for('experiences'))
+    return redirect(url_for('Experiments'))
 
-# Edit experience
-@app.route('/process-edit-experiences',methods=['POST'])
-def processToEditExperiences():
+# Edit Experiment
+@app.route('/process-edit-Experiments',methods=['POST'])
+def processToEditExperiments():
     global session
-    #Obtaining the new datas of experience for edit the object 
-    id_experience = int(request.form.get('id_experience'))
+    #Obtaining the new datas of Experiment for edit the object 
+    id_Experiment = int(request.form.get('id_Experiment'))
     nom = request.form.get('nom')
     date_debut = request.form.get('date_debut')
     date_fin = request.form.get('date_fin')
-    etat = request.form.get('etat_experience')
+    etat = request.form.get('etat_Experiment')
 
     #Obtaining the relevant object in the database
-    experience = octopus.get_experience_by_id(id_experience)
+    Experiment = octopus.get_Experiment_by_id(id_Experiment)
 
     #edit the datas
-    experience.nom=nom
+    Experiment.nom=nom
     if date_debut:
-        experience.date_debut = date_debut
+        Experiment.date_debut = date_debut
     if date_fin:
-        experience.date_fin = date_fin
-    experience.etat_experience = etat   
+        Experiment.date_fin = date_fin
+    Experiment.etat_Experiment = etat   
     session.commit()
-    return redirect(url_for('experiences'))
+    return redirect(url_for('Experiments'))
 
 # Start Flask server
 if __name__ == '__main__':
