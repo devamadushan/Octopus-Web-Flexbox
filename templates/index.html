@@ -6,21 +6,31 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lemon+Milk:wght@500&display=swap">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <link rel="stylesheet" href="/static/index.css">
+        <link rel="icon" href="/static/images/CNRSlogo.svg" type="image/x-icon">
+
         <title>Accueil</title>
     </head>
+    <nav>
+            
+        <h3><a href="inscription">Inscription</a></h3>
+        <h3 id="acc">Ecolabs CNRS</li>
+        {% if role == 'visiteur' %}
+            <h3 style="float:right"><a href="connexion" class="active">Connexion</a></h3>
+        {% else %}
+            <h3 style="float:right"><a href="deconnexion" class="active">Deconnexion</a></h3>
+        {% endif %}
+    </nav>
     <body>
         <h6 id="accueil"></h6>
 
-        <nav>
-            
-            <h3>Ecolabs CNRS</h3>
-            <h3 id="acc">Accueil</li>
-            {% if role == 'visiteur' %}
-                <h3 style="float:right"><a href="connexion" class="active">Connexion</a></h3>
-            {% else %}
-                <h3 style="float:right"><a href="deconnexion" class="active">Deconnexion</a></h3>
-            {% endif %}
-        </nav>
+        <script>
+            // Recharge la page après 5000 millisecondes (5 secondes)
+            setTimeout(function() {
+                location.reload();
+            }, 50000);
+        </script>
+
+        
         <script>
             $(document).ready(function() {
                 var nav = $('nav');
@@ -417,7 +427,7 @@
         <footer class="footer" role="contentinfo">
             <div class="inner">
                 <div class="home__small-inner footer__content">
-                    <img src="/static/images/logo-footer.svg" alt="Accueil" class="logoCNRS">
+                    <a href="https://www.cnrs.fr/fr"><img src="/static/images/logo-footer.svg" alt="Accueil" class="logoCNRS"></a>
                     <div class="footer__child">
                         <h3 class="footer__title">Nous suivre</h3>
                         <ul class="footer__social">
@@ -431,19 +441,19 @@
             </div>
             <ul class="credits">
                 <li class="menu-item">
-                    <a href="/fr/accessibilite" target="_self" title="Politique d'accessibilité" data-drupal-link-system-path="node/1717" rel="noopener">Accessibilité</a>
+                    <a href="https://www.cnrs.fr/fr/accessibilite" target="_self" title="Politique d'accessibilité" data-drupal-link-system-path="node/1717" rel="noopener">Accessibilité</a>
                 </li>
                 <li class="menu-item">
-                    <a href="/fr/credits" title="Crédits du site" data-drupal-link-system-path="node/1685">Crédits</a>
+                    <a href="https://www.cnrs.fr/fr/credits" title="Crédits du site" data-drupal-link-system-path="node/1685">Crédits</a>
                 </li>
                 <li class="menu-item">
-                    <a href="/fr/gestion-des-cookies" data-drupal-link-system-path="node/5633">Gestion des cookies</a>
+                    <a href="https://www.cnrs.fr/fr/gestion-des-cookies" data-drupal-link-system-path="node/5633">Gestion des cookies</a>
                 </li>
                 <li class="menu-item">
-                    <a href="/fr/rgpd" target="_self" title="RGPD" data-drupal-link-system-path="node/3179" rel="noopener">Données personnelles</a>
+                    <a href="https://www.cnrs.fr/fr/rgpd" target="_self" title="RGPD" data-drupal-link-system-path="node/3179" rel="noopener">Données personnelles</a>
                 </li>
                 <li class="menu-item">
-                    <a href="/fr/mentions-legales" data-drupal-link-system-path="node/1707">Mentions légales</a>
+                    <a href="https://www.cnrs.fr/fr/mentions-legales" data-drupal-link-system-path="node/1707">Mentions légales</a>
                 </li>
             </ul>
         </footer>
@@ -453,3 +463,14 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     </body>
     </html>
+
+
+
+
+
+
+
+
+
+
+    

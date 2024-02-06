@@ -6,13 +6,23 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lemon+Milk:wght@500&display=swap">
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
         <link rel="stylesheet" href="/static/index.css">
-        <title>Accueil</title>
+        <link rel="icon" href="/static/images/CNRSlogo.svg" type="image/x-icon">
+        <title>Accueil Ecolabs</title>
     </head>
     <body>
         <h6 id="accueil"></h6>
 
         <nav>
-            <h3><a href="experiences">Experiences</a></h3>
+            <!-- <h3><a href="experiences">Experiences</a></h3> -->
+            
+            <div class="dropdown">
+                <button class="dropbtn">Menu</button>
+                <div class="dropdown-content">
+                    <a href="experiences">Experiences</a>
+                    <a href="utilisateurs">Utilisateurs</a>
+                </div>
+            </div>
+            </button>
             <h3 id="acc">Accueil</li>
             {% if role == 'visiteur' %}
                 <h3 style="float:right"><a href="connexion" class="active">Connexion</a></h3>

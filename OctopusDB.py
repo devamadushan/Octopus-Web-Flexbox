@@ -30,7 +30,7 @@ class OctopusDB():
 
 
     # Method to retrieve all experiments from database
-    def get_all_Experiment(self):
+    def get_all_experience(self):
         global session
         Experiments = session.query(Experiment).all()
         session.commit()
@@ -57,7 +57,7 @@ class OctopusDB():
                 return cellule
 
     # Method for retrieving current and future Experiments
-    def get_futur_and_current_Experiment(self):
+    def get_futur_and_current_experience(self):
         result = []
         for Experiment in self.Experiments:
             if Experiment.status_experiment == "à venir" or Experiment.status_experiment == "En cours":
@@ -65,29 +65,30 @@ class OctopusDB():
         return result
 
     # Method to retrieve an Experiment from its ID
-    def get_Experiment_by_id(self,id_Experiment):
+    def get_experience_by_id(self,id_Experiment):
+        Experiments = session.query(Experiment).all()
         try :
-            for Experiment in self.Experiments:
-                if Experiment.id == id_Experiment:
-                    return Experiment
+            for experiment in Experiments:
+                if experiment.id == id_Experiment:
+                    return experiment
         except Exception as e:
             print(f"Erreur lors de la récupération de l'expérience par ID : {str(e)}")
             return None
 
 
-    # Method to retrieve the history of a cell from its ID
+       # Method to retrieve the history of a cell from its ID
     def get_historique_by_id(self,cellule_id):
         global session
         historiques = session.query(Historiy_cells).all()
         result = []
         for historique in historiques:
             if historique.cells_id == cellule_id:
-
                 cellule = self.get_cellule_by_id(historique.cells_id)
-                Experiment = self.get_Experiment_by_id(historique.cells_experiment_id)
-                result.append({"historique": historique, "cellule": cellule, "Experiment": Experiment})
+                experience = self.get_experience_by_id(historique.cells_experiment_id)
+                result.append({"historique": historique, "cellule": cellule, "experience": experience})
         session.commit()
         return result
+        
 
     # Method to retrieve the Experiment of a cell from its ID
     def get_Experiment_of_cellule(self,cellule_id):
@@ -104,7 +105,7 @@ class OctopusDB():
         return None
 
     # Method for updating a cell's Experiment
-    def new_Experiment_of_cellule(self,id_cellule,id_Experiment):
+    def new_experience_of_cellule(self,id_cellule,id_Experiment):
         global session
         try :
             cellule = self.get_cellule_by_id(id_cellule)
@@ -132,15 +133,17 @@ class OctopusDB():
         try :
             for historique in historiques:
                 if historique.cells_id == cellule_id and historique.status == "En cours":
-                    historique.status = "Terminés"
+                    historique.status = "Terminé"
                     session.commit()
             return "mise a jour reussi !"
         except Exception as e:
             return f"Une erreur s'est produite : {str(e)}"
         
-    # Auteur Luca
+        
+
+   # Auteur Luca
     
-    # Existant
+    # Check if user exists
     def user_exists(cls,login,password):
         global session
         users = session.query(User).all()
@@ -158,7 +161,7 @@ class OctopusDB():
             return f"une erreur s'est produite : {str(e)}"
         
 
-    # method to find out if user exists and get their role
+    # Method to find out if user exists and get their role
     def get_role_by_user(cls,username):
         global session
         users = session.query(User).all()
@@ -170,6 +173,60 @@ class OctopusDB():
             return 'utilisateur inexistant'
         except Exception as e:
             return f"une erreur s'est produite : {str(e)}"
+        
+
+    # Check if username exists
+    def username_exist(cls,name):
+        global session
+        users = session.query(User).all()
+        try :
+            for user in users:
+                if name == user.username:
+                    return False
+            return True
+    
+        except Exception as e:
+            return f"une erreur s'est produite : {str(e)}"
+        
+    # Add user
+    def add_user(cls,name,pwd):
+        global session
+        try :
+            verification = octopus.username_exist(name)
+
+            if verification == True:
+
+                newUser = User(username = name)
+                newUser.set_password(pwd)
+
+                session.add(newUser)
+                session.commit()
+
+            else:
+                return "Nom d'utilisateur indisponible" 
+                
+
+        except Exception as e:
+            return f"une erreur s'est produite : {str(e)}"
+        
+     # Method to retrieve an experience from its ID
+    def get_user_by_id(self,id):
+        for user in self.users:
+            if user.id == id:
+                return user
+        return None
+        
+    
+    # Edit user role 
+    def edit_role(cls,id,new_name, new_role):
+        global session
+        user = cls.get_user_by_id(id)
+        if user:
+            user.username = new_name
+            user.role = new_role
+            session.commit()
+            return True
+        return False
             
 
 
@@ -180,11 +237,7 @@ class OctopusDB():
 
 # Affichage du résultat
 
-
 octopus = OctopusDB()
-# resultat = octopus.user_existant(name, pwd)
-
-# print(resultat)
 
 
 

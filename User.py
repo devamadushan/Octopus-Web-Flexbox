@@ -14,12 +14,9 @@ from flask import Flask
 from Connexion import Base, DB_URL, session,Session
 from flask_bcrypt import Bcrypt,generate_password_hash,check_password_hash
 
-
 ##############################################################################################
 
 # Auteur: Luca
-
-
 
 class User(Base):
     __tablename__ = 'user'
@@ -27,8 +24,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(50),nullable=False)
     userpassword = Column(String(255), nullable=False)
-    role = Column(String(20), nullable=False, default='visiteur')
-
+    role = Column(String(20), nullable=False, default='utilisateur')
 
     bcrypt = Bcrypt()
 
@@ -42,7 +38,8 @@ class User(Base):
 
 Base.metadata.create_all(DB_URL)
 
-# Create user
+
+# For create user
 # adminuser = Utilisateur(username='',role='')
 # adminuser.set_password('')
 
