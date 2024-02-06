@@ -237,7 +237,7 @@ __Crée une experience:__
 
 image::img/Site_4.png[]
 ****
-===== Utilisaeurs
+===== Utilisateurs
 
 image::img/Site_5.png[]
 
