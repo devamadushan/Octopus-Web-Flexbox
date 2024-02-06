@@ -33,7 +33,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{passwor
 ############################################################################################################
 
 # Recovery of configuration informations
-with open('/home/luca/Bureau/ecolab/Ecolabs_test/ecolab2_api/pyResponsive/config.json', 'r') as config:
+with open('config.json', 'r') as config:
     config = json.load(config)
     ip = config['IP']
     port = config['Port']
@@ -41,7 +41,7 @@ with open('/home/luca/Bureau/ecolab/Ecolabs_test/ecolab2_api/pyResponsive/config
 
 ############################################################################################################
 # Auteur Luca et Deva
-
+#C:\Users\devat\Desktop\Octopus_Web\Octopus_Web_Flexbox\config.json
 # Basic role 
 role = "visiteur"
 

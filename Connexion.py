@@ -1,6 +1,7 @@
 '''
 SQLALchemy : pip install SQLAlchemy
-Urlib :pip install urllib3
+Urlib : pip install urllib3
+Pymysql : pip install pymysql
 '''
 
 ################################################################################################################
