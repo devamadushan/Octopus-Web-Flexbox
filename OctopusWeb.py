@@ -33,7 +33,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{utilisateur}:{passwor
 ############################################################################################################
 
 # Recovery of configuration informations
-with open('config.json', 'r') as config:
+with open('Octopus_Web_Flexbox/config.json', 'r') as config:
     config = json.load(config)
     ip = config['IP']
     port = config['Port']

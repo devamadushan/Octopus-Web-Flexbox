@@ -186,7 +186,67 @@ image::img/connexion_BDD.png[]
 
 === Web
 
-==== Partie de Luca
+==== En attente pour la Partie de Luca............
+
+==== #Rendu final#
+
+===== Accueil
+----
+accessible par des visiteurs et des administrateurs.
+----
+image::img/Flexbox_1.png[]
+
+image::img/Flexbox_2.png/[]
+
+****
+__Page d'inscriprion : __
+
+image::img/Site_7.png[]
+****
+
+****
+__Page de connexion : __
+
+image::img/Site_8.png[]
+****
+
+===== Détail
+----
+uniquement pour l'administrateur
+----
+
+image::img/Site_1.png[]
+
+****
+__La liste des expériences pour les affecter à la cellule :__
+
+image::img/Site_2.png[]
+****
+
+===== Experiences
+
+
+image::img/Site_3.png[]
+****
+_Modifier une experience:_
+
+image::img/Site_9.png[]
+****
+****
+__Crée une experience:__
+
+image::img/Site_4.png[]
+****
+===== Utilisaeurs
+
+image::img/Site_5.png[]
+
+****
+_Modifier le rôle ou le nom d'un utilisateur:_
+
+image::img/Site_6.png[]
+****
+
 
 === Bot Octopus:
 

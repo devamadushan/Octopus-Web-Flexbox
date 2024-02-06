@@ -69,7 +69,7 @@
         <select class="form-control" id="exampleFormControlSelect1" name="experience">
           <option value="" disabled >Choisir l'expérience</option>
           {% for experience in experience_avenir_encours %}
-            <option value="{{ experience.id }}">{{ experience.nom }} ({{ experience.etat_experience }})</option>
+            <option value="{{ experience.id }}">{{ experience.nom }} ({{ experience.status_experiment }})</option>
           {% endfor %}
         </select>
           {% for object in historique %}  
