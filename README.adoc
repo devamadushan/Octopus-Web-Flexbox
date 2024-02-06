@@ -1,0 +1,220 @@
+= Project Octopus
+:toc-title: Tables des matières
+:toc: top
+:toclevels: 6
+
+<<<<
+
+== Contexte:
+[.text-justify]
+****
+
+Le projet Octopus a été crée dans le but de faciliter
+la surveillance des expériences menées dans les cellules
+climatiques (ECOLAB). Il offre des fonctionnalités telles que
+la consultation à distance et un système d'alerte pour suivre
+le déroulement des expériences.
+****
+
+
+== Architecture systéme
+
+
+image::img/structure-du-projet.png[]
+
+NOTE: Voici un schéma illustrant la structure de
+notre projet. Les blocs en vert représentent les
+éléments intégrés à notre projet Octopus, tandis
+que les blocs en bleu ont déjà été réalisés par
+Mr. chollet
+
+
+image::img/Automate.png[width=100,height=50]
+-----
+Systèm de pilotage et d'aquisition des actionneurs et capteurs des chambres climatiques.L'automate est autonome : il régle les chambresclimatique selon des cosignes.
+-----
+
+image::img/generateur.png[width=100,height=50]
+----
+Système de généralisation de climats qui permet de générer des fichiers contenant les variations de paramétre de climat : temperature hygrométrie consentration de CO2, etc...
+
+Le générateur de climat transforme des clonnées météo provenant de différenes stations dans le format supporté par les chambres climatiques.
+----
+image::img/Apirest.png[width=100,height=50]
+----
+Le serveur API REST permet au serveur web de récupérer des paramètres de température en temps réel au format JSON
+----
+
+image::img/sereveurdb.png[width=100,height=50]
+----
+Le serveur de base de données permet d'avoir une sauvegarde des expériences en cours et terminées dans les cellules, tout en gérant les rôles des utilisateurs.
+----
+image::img/serveurweb.png[width=100,height=50]
+----
+Le serveur web est une interface permettant aux clients de consulter les écolabs à distance. Ils peuvent vérifier les températures actuelles des cellules, ainsi que leurs expériences. Les administrateurs ont la possibilité de modifier ou d'ajouter des expériences à distance.
+----
+image::img/watchdog.png[width=100,height=50]
+----
+Système de surveillance qui permet de prévenir le personnel en cas de défaillance sur le déroulement d'une expérience.
+
+Le watchdog surveille les paramètres climatiques et permet d'envoyer des messages sous forme de SMS.
+----
+
+image::img/Bots.png[width=100,height=50]
+----
+Les bots ont un rôle de communication avec les clients, échangeant des informations. Les utilisateurs peuvent demander au bot la température actuelle d'une cellule ou solliciter le lien de notre site web.
+Dans le cadre de ce projet, nous avons codé un bot Discord.
+----
+
+=== API REST
+[source,text]
+----
+Une API REST repose sur des principes fondamentaux incluant l'architecture orientée ressources avec des identifiants URI, la représentation des données en JSON ou XML, la communication via les méthodes HTTP standard (GET, POST, PUT, DELETE), le principe de communication sans état, et une interface uniforme définissant des conventions pour les URI, les méthodes HTTP et les représentations des ressources.
+----
+==== Principes de bases
+* Architecture Orientée Ressources : Identification des éléments par des URI.
+* Représentation des Données : Utilisation de formats standard (JSON, XML) pour représenter les ressources.
+* Méthodes HTTP Standard : Utilisation des méthodes GET, POST, PUT, DELETE pour interagir avec les ressources.
+* Communication Sans État : Chaque requête contient toutes les informations nécessaires, et le serveur ne garde pas d'état entre les requêtes.
+* Interface Uniforme : Définition de conventions pour les URI, les méthodes HTTP et les représentations des ressources.
+
+NOTE: Dans ce projet, nous avons utilisé uniquement les méthodes HTTP *GET* en format *JSON*
+
+
+==== Arborescence :
+----
+├───.idea
+│       encodings.xml
+│       misc.xml
+│       modules.xml
+│       Octopus.iml
+│       workspace.xml
+│
+├───Commons
+│   │   __init__.py
+│   │
+│   ├───Config
+│   │   │   config.py
+│   │   │   config_json.py
+│   │   │   __init__.py
+│   │
+│   └───__pycache__
+│           __init__.cpython-38.pyc
+│
+├───config
+│   │   climate_settings.json
+│   │   errors.json
+│   │
+│   ├───ECOLAB_1 ... (tout les fichier json qui contient les parametre adapter pour interroger l'automate )
+│   │       E1C1.json
+│   │       E1C2.json
+│   │       E1C3.json
+│   │       E1TH.json
+│   │       ECOLAB_1.json
+│   │
+│   ├───ECOLAB_2 ... (tout les fichier json qui contient les parametre adapter pour interroger l'automate )
+│   │       E2C1.json
+│   │       E2C2.json
+│   │       E2C3.json
+│   │       E2TH.json
+│   │       ECOLAB_2.json
+│   │
+│   ├───ECOLAB_3 ... (tout les fichier json qui contient les parametre adapter pour interroger l'automate )
+│   │       E3C1.json
+│   │       E3C2.json
+│   │       E3C3.json
+│   │       E3TH.json
+│   │       ECOLAB_3.json
+│   │
+│   ├───ECOLAB_4 ... (tout les fichier json qui contient les parametre adapter pour interroger l'automate )
+│   │       E4C1.json
+│   │       E4C2.json
+│   │       E4C3.json
+│   │       E4TH.json
+│   │       ECOLAB_4.json
+│   │
+│   ├───ECOLAB_5 ... (tout les fichier json qui contient les parametre adapter pour interroger l'automate )
+│   │       E5C1.json
+│   │       E5C2.json
+│   │       E5C3.json
+│   │       E5TH.json
+│   │       ECOLAB_5.json
+│   │
+│   └───ECOLAB_6 ... (tout les fichier json qui contient les parametre adapter pour interroger l'automate )
+│           E6C1.json
+│           E6C2.json
+│           E6C3.json
+│           E6TH.json
+│           ECOLAB_6.json
+│   api.py ... (Programme Python qui récupère et retourne les API)
+│   base_error.py
+│   cell.py ... (Class Cell)
+│   climate_settings.py
+│   config.json
+│   E1C1.json
+│   ecolab.py
+│   plc.py
+│   thermo.py
+----
+
+==== Comment Interroger les APIs des Ecolabs ?
+
+[source,text]
+----
+Chaque écolab est identifié par une adresse IP. Lorsqu'on interroge l'adresse IP de l'écolab, elle renvoie les paramètres des cellules qu'elle contient.
+----
+image::img/IPEcolab.png[]
+
+==== Routage :
+image::img/Routage.PNG[]
+****
+Le fichier *api.py* contient deux routages. Le premier routage à la racine renvoie tous les paramètres de toutes les cellules de l'écolab. Le deuxième routage retourne uniquement le paramètre souhaité d'une seule cellule.
+****
+
+<<<<
+
+=== DB : Data Base
+==== Structure de la Base de données :
+image::img/base_de_donnee.png[align=center]
+
+==== Comment Communiquer avec la Base de Donnée ?
+----
+Lorsque vous souhaitez communiquer avec la base de données du serveur DB, il suffit d'ajouter l'adresse IP du serveur DB devant l'utilisateur.
+----
+image::img/connexion_BDD.png[]
+
+
+=== Web
+
+==== Partie de Luca
+
+=== Bot Octopus:
+
+image::img/Octopus_bot.png[width=200, align=center]
+
+****
+Le bot Octopus est présent dans le salon API du serveur Octopus sur Discord.
+****
+==== Arborescence
+----
+│   api.py
+│   bot.py
+│   key.py
+│   Liens.json
+│
+└───__pycache__
+        api.cpython-311.pyc
+        key.cpython-311.pyc
+----
+
+==== Les Commands :
+Voici la liste des commandes qui vous permettent de communiquer avec le bot :
+
+image::img/Bot_commandes.png[width=500, align=center]
+
+==== Exemples :
+image::img/exemple_bot.png[]
+
+image::img/web_cnrs.png[]
+
+
