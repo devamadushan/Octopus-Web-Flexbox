@@ -31,27 +31,32 @@ Mr. chollet
 
 image::img/Automate.png[width=100,height=50]
 -----
-Systèm de pilotage et d'aquisition des actionneurs et capteurs des chambres climatiques.L'automate est autonome : il régle les chambresclimatique selon des cosignes.
+Systèm de pilotage et d'aquisition des actionneurs et capteurs des chambres climatiques.
+L'automate est autonome : il régle les chambresclimatique selon des cosignes.
 -----
 
 image::img/generateur.png[width=100,height=50]
 ----
-Système de généralisation de climats qui permet de générer des fichiers contenant les variations de paramétre de climat : temperature hygrométrie consentration de CO2, etc...
+Système de généralisation de climats qui permet de générer des fichiers contenant les variations de paramétre de climat :
+temperature hygrométrie consentration de CO2, etc...
 
 Le générateur de climat transforme des clonnées météo provenant de différenes stations dans le format supporté par les chambres climatiques.
 ----
 image::img/Apirest.png[width=100,height=50]
 ----
-Le serveur API REST permet au serveur web de récupérer des paramètres de température en temps réel au format JSON
+Le serveur API REST permet au serveur web de récupérer des paramètres de température en temps réel au format JSON.
 ----
 
 image::img/sereveurdb.png[width=100,height=50]
 ----
-Le serveur de base de données permet d'avoir une sauvegarde des expériences en cours et terminées dans les cellules, tout en gérant les rôles des utilisateurs.
+Le serveur de base de données permet d'avoir une sauvegarde des expériences en cours et terminées dans les cellules,
+tout en gérant les rôles des utilisateurs.
 ----
 image::img/serveurweb.png[width=100,height=50]
 ----
-Le serveur web est une interface permettant aux clients de consulter les écolabs à distance. Ils peuvent vérifier les températures actuelles des cellules, ainsi que leurs expériences. Les administrateurs ont la possibilité de modifier ou d'ajouter des expériences à distance.
+Le serveur web est une interface permettant aux clients de consulter les écolabs à distance.
+Ils peuvent vérifier les températures actuelles des cellules, ainsi que leurs expériences.
+Les administrateurs ont la possibilité de modifier ou d'ajouter des expériences à distance.
 ----
 image::img/watchdog.png[width=100,height=50]
 ----
@@ -62,14 +67,18 @@ Le watchdog surveille les paramètres climatiques et permet d'envoyer des messag
 
 image::img/Bots.png[width=100,height=50]
 ----
-Les bots ont un rôle de communication avec les clients, échangeant des informations. Les utilisateurs peuvent demander au bot la température actuelle d'une cellule ou solliciter le lien de notre site web.
+Les bots ont un rôle de communication avec les clients, échangeant des informations.
+Les utilisateurs peuvent demander au bot la température actuelle d'une cellule ou solliciter le lien de notre site web.
 Dans le cadre de ce projet, nous avons codé un bot Discord.
 ----
 
 === API REST
 [source,text]
 ----
-Une API REST repose sur des principes fondamentaux incluant l'architecture orientée ressources avec des identifiants URI, la représentation des données en JSON ou XML, la communication via les méthodes HTTP standard (GET, POST, PUT, DELETE), le principe de communication sans état, et une interface uniforme définissant des conventions pour les URI, les méthodes HTTP et les représentations des ressources.
+Une API REST repose sur des principes fondamentaux incluant l'architecture orientée ressources avec des identifiants URI,
+la représentation des données en JSON ou XML, la communication via les méthodes HTTP standard (GET, POST, PUT, DELETE),
+le principe de communication sans état, et une interface uniforme définissant des conventions pour les URI,
+les méthodes HTTP et les représentations des ressources.
 ----
 ==== Principes de bases
 * Architecture Orientée Ressources : Identification des éléments par des URI.
@@ -294,7 +303,7 @@ image::img/connexion_BDD.png[]
 Ce schéma représente les actions de pouvant être effectuées à partir de cet route, qui est l'index de base.
 ----
 
-image::Img/Index.jpg[]
+image::img/Index.jpg[]
 
 Connexion
 
@@ -302,7 +311,7 @@ Connexion
 Ce schéma représente le procéssus qui est fait lors d'une connexion d'utilisateur.
 ----
 
-image::Img/Connexion.jpg[]
+image::img/Connexion.jpg[]
 
 Admin
 
@@ -311,7 +320,7 @@ Ce schéma représente les actions de pouvant être effectuées à partir de cet
 Elle est accessible uniquement lorsque l'utilisateur connecté possède le rôle admin.
 ----
 
-image::Img/adminT.jpg[]
+image::img/adminT.jpg[]
 
 Détails
 
@@ -321,7 +330,7 @@ Lorsqu'un utilisateur clique sur une cellule à partir de l'index admin, cette r
 Cette page affiche des informations supplémentaires sur la cellule concernée.
 ----
 
-image::Img/Détails.jpg[]
+image::img/Détails.jpg[]
 
 Expériences
 
@@ -331,7 +340,7 @@ Elle redirige vers une page affichant toutes les expériences présentes dans la
 De plus, elle permet la modification d'une expérience (date, nom, état, etc.) ainsi que l'ajout d'une nouvelle expérience.
 ----
 
-image::Img/Expériences.jpg[]
+image::img/Expériences.jpg[]
 
 Utilisateurs
 
@@ -341,7 +350,7 @@ Elle redirige vers une page affichant tous les utilisateurs présents dans la ba
 De plus, elle permet la modification du rôle d'un utilisateur (par exemple, administrateur, utilisateur normal) et d'autres informations liées à leur compte.
 ----
 
-image::Img/Utilisateurs.jpg[]
+image::img/Utilisateurs.jpg[]
 
 
 ==== #Rendu final#
