@@ -186,7 +186,163 @@ image::img/connexion_BDD.png[]
 
 === Web
 
-==== En attente pour la Partie de Luca............
+==== Arborescence
+11 directories, 87 files
+----
+├── Doc.adoc
+├──Img
+│   ├──adminT.jpg
+│   ├──Connexion.jpg
+│   ├──Détails.jpg
+│   ├──Expériences.jpg
+│   ├──Index.jpg
+│   ├──Utilisateurs.jpg
+├── ImgResponsive
+│   ├── Cells.py (Classe Cellule)
+│   ├── config.json
+│   ├── Connexion.py (Paramètre de connexion DB)
+│   ├── EcolabWeb.py (Classe Ecolab)
+│   ├── Experiment.py (Classe Experience)
+│   ├── History.py (Classe Historique)
+│   ├── init_db.py (Tests)
+│   ├── OctopusDB.py (Classe OctopusDB contenant toutes les fonctions)
+│   ├── OctopusWeb.py (Toutes les routes concernant les templates : WEB)
+│   ├── __pycache__
+│   │   ├── Cells.cpython-310.pyc
+│   │   ├── Connexion.cpython-310.pyc
+│   │   ├── EcolabWeb.cpython-310.pyc
+│   │   ├── Experiment.cpython-310.pyc
+│   │   ├── History.cpython-310.pyc
+│   │   ├── OctopusDB.cpython-310.pyc
+│   │   └── User.cpython-310.pyc
+│   ├── static
+│   │   ├── images
+│   │   │   ├── CNRSlogo.svg
+│   │   │   ├── DJI_0884.JPG
+│   │   │   ├── Ecolabs.png
+│   │   │   ├── imgmobil2.png
+│   │   │   └── logo-footer.svg
+│   │   ├── index.css (CSS de l'index)
+│   │   ├── responsive.js (Pour l'index)
+│   │   └── style.css (CSS des autres templates)
+│   ├── templates
+│   │   ├── addExperience.html (Ajouter une expérience)
+│   │   ├── adminTemplate.html (Template de l'admin)
+│   │   ├── allUsers.html (Liste des utilisateurs)
+│   │   ├── connection.html (Template de connexion)
+│   │   ├── detail.html (Template de détails d'une cellule)
+│   │   ├── editExperience.html (Modification d'une expérience)
+│   │   ├── editRole.html (Modification de rôle d'utilisateur)
+│   │   ├── experience.html (Liste des expériences)
+│   │   ├── index.html (Index normal)
+│   │   ├── inscription.html (Template d'inscription)
+│   │   ├── noAccess.html (Message de non-accès)
+│   │   ├── successAddExperienceInCellule.html (Message de réussite d'action)
+│   │   └── successAddNewExperience.html (Message de réussite d'action)
+│   └── User.py (Classe Utilisateur)
+└── Octopus
+    ├── Cells.py (Classe Cellule)
+    ├── config.json
+    ├── Connexion.py (Paramètre de connexion DB)
+    ├── EcolabWeb.py (Classe Ecolab)
+    ├── Experiment.py (Classe Experience)
+    ├── History.py (Classe Historique)
+    ├── init_db.py (Tests)
+    ├── OctopusDB.py (Classe OctopusDB contenant toutes les fonctions)
+    ├── OctopusWeb.py (Toutes les routes concernant les templates : WEB)
+    ├── __pycache__
+    │   ├── Cells.cpython-310.pyc
+    │   ├── Cellule.cpython-310.pyc
+    │   ├── Connexion.cpython-310.pyc
+    │   ├── Ecolab.cpython-310.pyc
+    │   ├── EcolabWeb.cpython-310.pyc
+    │   ├── Experience.cpython-310.pyc
+    │   ├── Historique.cpython-310.pyc
+    │   ├── History.cpython-310.pyc
+    │   ├── OctopusDB.cpython-310.pyc
+    │   └── User.cpython-310.pyc
+    ├── static
+    │   ├── images
+    │   │   ├── CNRSlogo.svg
+    │   │   ├── Ecolabs.png
+    │   │   ├── icons8-flèche-vers-le-haut-100.png
+    │   │   ├── icons8-flèche-vers-le-haut-50.png
+    │   │   ├── logo-footer.svg
+    │   │   └── logo.svg
+    │   ├── index.css (CSS de l'index)
+    │   └── style.css (CSS des autres templates)
+    ├── templates
+    │   ├── addExperience.html (Ajouter une expérience)
+    │   ├── adminTemplate.html (Template de l'admin)
+    │   ├── allUsers.html (Liste des utilisateurs)
+    │   ├── connection.html (Template de connexion)
+    │   ├── detail.html (Template de détail d'une cellule)
+    │   ├── editExperience.html (Modification d'une expérience)
+    │   ├── editRole.html (Modification de rôle d'utilisateur)
+    │   ├── experience.html (Liste des expériences)
+    │   ├── index.html (Index normal)
+    │   ├── inscription.html (Template d'inscription)
+    │   ├── noAccess.html (Message de non-accès)
+    │   ├── successAddExperienceInCellule.html (Message de réussite d'action)
+    │   └── successAddNewExperience.html (Message de réussite d'action)
+    └── User.py (Classe Utilisateur)
+
+----
+
+==== Schémas:
+----
+Ce schéma représente les actions de pouvant être effectuées à partir de cet route, qui est l'index de base.
+----
+
+image::Img/Index.jpg[]
+
+Connexion
+
+----
+Ce schéma représente le procéssus qui est fait lors d'une connexion d'utilisateur.
+----
+
+image::Img/Connexion.jpg[]
+
+Admin
+
+----
+Ce schéma représente les actions de pouvant être effectuées à partir de cet route, qui est l'index admin.
+Elle est accessible uniquement lorsque l'utilisateur connecté possède le rôle admin.
+----
+
+image::Img/adminT.jpg[]
+
+Détails
+
+----
+Ce schéma représente la page web detail ainsi que les actions réalisables sur cette page.
+Lorsqu'un utilisateur clique sur une cellule à partir de l'index admin, cette route est activée pour diriger vers la page detail.
+Cette page affiche des informations supplémentaires sur la cellule concernée.
+----
+
+image::Img/Détails.jpg[]
+
+Expériences
+
+----
+Ce schéma représente la page des Expériences ainsi que les actions possibles sur cette page.
+Elle redirige vers une page affichant toutes les expériences présentes dans la base de données.
+De plus, elle permet la modification d'une expérience (date, nom, état, etc.) ainsi que l'ajout d'une nouvelle expérience.
+----
+
+image::Img/Expériences.jpg[]
+
+Utilisateurs
+
+----
+Ce schéma représente la page des Utilisateurs ainsi que les actions possibles sur cette page.
+Elle redirige vers une page affichant tous les utilisateurs présents dans la base de données.
+De plus, elle permet la modification du rôle d'un utilisateur (par exemple, administrateur, utilisateur normal) et d'autres informations liées à leur compte.
+----
+
+image::Img/Utilisateurs.jpg[]
+
 
 ==== #Rendu final#
 
